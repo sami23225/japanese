@@ -7,7 +7,7 @@
   <meta name="description" content="A personal Japanese study module: flashcards with SRS, quizzes, particle & conjugation drills, and timed speaking practice." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Quicksand:wght@500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -142,7 +142,8 @@
         <div class="quiz-question">
           <div class="prompt-jp" id="conj-prompt"></div>
           <div class="prompt-en" id="conj-sub"></div>
-          <input class="drill-input" id="conj-input" placeholder="答えをひらがなで..." autocomplete="off" autocapitalize="off" spellcheck="false" />
+          <input class="drill-input" id="conj-input" placeholder="type romaji (tabemasu) → たべます" autocomplete="off" autocapitalize="off" spellcheck="false" />
+          <div class="muted" style="font-size:12px;margin-top:-8px">No Japanese keyboard needed — just type romaji, it converts automatically.</div>
           <div class="controls-row" style="justify-content:center">
             <button class="btn small" id="conj-check">Check</button>
             <button class="btn ghost small" id="conj-reveal">Reveal</button>
@@ -211,6 +212,7 @@
   <script src="data/grammar.js"></script>
   <script src="data/speaking.js"></script>
   <!-- App logic -->
+  <script src="js/romaji.js"></script>
   <script src="js/storage.js"></script>
   <script src="js/flashcards.js"></script>
   <script src="js/quiz.js"></script>

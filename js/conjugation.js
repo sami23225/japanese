@@ -126,6 +126,9 @@ window.Conjugation = (function () {
 
   function init() {
     populateFormSelect();
+    // Wire romaji → hiragana conversion on the drill input so no Japanese
+    // keyboard is needed. Typing "tabemasu" auto-converts to たべます.
+    if (window.Romaji) window.Romaji.bindInput(document.getElementById("conj-input"));
     document.getElementById("conj-kind").addEventListener("change", populateFormSelect);
     document.getElementById("conj-start").addEventListener("click", () => {
       document.getElementById("conj-input").style.display = "block";
