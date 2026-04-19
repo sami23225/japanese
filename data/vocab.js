@@ -1,0 +1,202 @@
+// ============================================================
+// VOCAB DATA
+// Easy to extend: add new entries to any array below, or create
+// a new deck by pushing to `window.DECKS`.
+// Each card shape: { jp, kana, romaji, en, notes?, tags?: [] }
+// ============================================================
+
+window.DECKS = window.DECKS || {};
+
+// ---------- Frequency & Degree Adverbs (from your card) ----------
+window.DECKS.adverbs = {
+  id: "adverbs",
+  title: "Frequency & Degree Adverbs",
+  emoji: "⏱️",
+  description: "30 adverbs for how often / how much. Tap to flip, swipe or use buttons to rate yourself.",
+  cards: [
+    { jp: "いつも", kana: "いつも", romaji: "itsumo", en: "always" },
+    { jp: "ほぼ毎日", kana: "ほぼまいにち", romaji: "hobo mainichi", en: "almost every day" },
+    { jp: "たいてい", kana: "たいてい", romaji: "taitei", en: "usually" },
+    { jp: "普段", kana: "ふだん", romaji: "fudan", en: "usually / normally" },
+    { jp: "よく", kana: "よく", romaji: "yoku", en: "often" },
+    { jp: "しばしば", kana: "しばしば", romaji: "shibashiba", en: "often (more formal)" },
+    { jp: "たびたび", kana: "たびたび", romaji: "tabitabi", en: "frequently" },
+    { jp: "時々", kana: "ときどき", romaji: "tokidoki", en: "sometimes" },
+    { jp: "ときたま", kana: "ときたま", romaji: "tokitama", en: "once in a while" },
+    { jp: "たまに", kana: "たまに", romaji: "tama ni", en: "occasionally" },
+    { jp: "ときおり", kana: "ときおり", romaji: "toki ori", en: "at times" },
+    { jp: "ごくたまに", kana: "ごくたまに", romaji: "goku tama ni", en: "very rarely" },
+    { jp: "まれに", kana: "まれに", romaji: "mare ni", en: "rarely" },
+    { jp: "めったに〜ない", kana: "めったに〜ない", romaji: "mettani ~ nai", en: "hardly ever (negative only)" },
+    { jp: "ほとんど〜ない", kana: "ほとんど〜ない", romaji: "hotondo ~ nai", en: "almost never (negative only)" },
+    { jp: "とても", kana: "とても", romaji: "totemo", en: "very" },
+    { jp: "すごく", kana: "すごく", romaji: "sugoku", en: "very / super (casual)" },
+    { jp: "かなり", kana: "かなり", romaji: "kanari", en: "quite; fairly; considerably" },
+    { jp: "多少", kana: "たしょう", romaji: "tashō", en: "somewhat; to some extent" },
+    { jp: "ほぼ", kana: "ほぼ", romaji: "hobo", en: "almost; nearly" },
+    { jp: "けっこう", kana: "けっこう", romaji: "kekkō", en: "pretty; quite" },
+    { jp: "だいぶ", kana: "だいぶ", romaji: "daibu", en: "quite; a lot" },
+    { jp: "相当", kana: "そうとう", romaji: "sōtō", en: "considerably" },
+    { jp: "非常に", kana: "ひじょうに", romaji: "hijō ni", en: "extremely; highly" },
+    { jp: "きわめて", kana: "きわめて", romaji: "kiwamete", en: "extremely" },
+    { jp: "ものすごく", kana: "ものすごく", romaji: "monosugoku", en: "tremendously" },
+    { jp: "超", kana: "ちょう", romaji: "chō", en: "super; ultra (colloquial prefix)" },
+    { jp: "めっちゃ", kana: "めっちゃ", romaji: "meccha", en: "very; really (Kansai / casual)" },
+    { jp: "少し", kana: "すこし", romaji: "sukoshi", en: "a little; slightly" },
+    { jp: "ちょっと", kana: "ちょっと", romaji: "chotto", en: "a bit; a little; somewhat" },
+  ],
+};
+
+// ---------- Filler Words ----------
+window.DECKS.fillers = {
+  id: "fillers",
+  title: "Filler Words (会話のつなぎ)",
+  emoji: "💬",
+  description: "Natural conversation glue. Using these actually helps fluency — they buy you a second to think.",
+  cards: [
+    { jp: "えっと", kana: "えっと", romaji: "etto", en: "Ummm…", notes: "Buying thinking time" },
+    { jp: "あのう", kana: "あのう", romaji: "anō", en: "Uh… / Excuse me…", notes: "Polite opener" },
+    { jp: "まあ", kana: "まあ", romaji: "mā", en: "Well…", notes: "Softens statements" },
+    { jp: "なんか", kana: "なんか", romaji: "nanka", en: "Like… / sort of", notes: "Very casual" },
+    { jp: "うーん", kana: "うーん", romaji: "ūn", en: "Hmm…", notes: "Thinking / hesitating" },
+    { jp: "ていうか", kana: "ていうか", romaji: "te iu ka", en: "I mean… / rather", notes: "Self-correction" },
+    { jp: "そうそう", kana: "そうそう", romaji: "sō sō", en: "Yeah, yeah / that's right", notes: "Agreement" },
+    { jp: "やっぱり", kana: "やっぱり", romaji: "yappari", en: "I knew it / as expected", notes: "やはり = formal version" },
+    { jp: "たしかに", kana: "たしかに", romaji: "tashika ni", en: "That's true / indeed", notes: "Agreeing with a point" },
+  ],
+};
+
+// ---------- Conjunctions: saying "but" ----------
+window.DECKS.conjunctions = {
+  id: "conjunctions",
+  title: "\"But\" & Contrast",
+  emoji: "🔁",
+  description: "しかし・でも・けど all mean \"but\" but feel different. Context matters more than grammar.",
+  cards: [
+    { jp: "しかし", kana: "しかし", romaji: "shikashi", en: "however (formal)",
+      notes: "Formal; starts sentences. Ex: 日本は美しい国です。しかし、地震が多いです。" },
+    { jp: "でも", kana: "でも", romaji: "demo", en: "but / however (casual)",
+      notes: "Starts sentences, casual. Ex: 今日は忙しいです。でも明日は暇です。" },
+    { jp: "けど", kana: "けど", romaji: "kedo", en: "but / though (mid-sentence)",
+      notes: "Very casual; connects clauses. Ex: 寿司はおいしいけど、高いです。" },
+    { jp: "けれども", kana: "けれども", romaji: "keredomo", en: "but / however (polite written)",
+      notes: "More formal than けど, softer than しかし" },
+    { jp: "が", kana: "が", romaji: "ga", en: "but (neutral, written)",
+      notes: "Connects two clauses. Ex: 食べたいですが、お金がない。" },
+  ],
+};
+
+// ---------- Core N5 verbs (for drills) ----------
+window.DECKS.verbsN5 = {
+  id: "verbsN5",
+  title: "Core N5 Verbs",
+  emoji: "🏃",
+  description: "The 30 verbs you'll use constantly. Know the type (う / る / irregular) — that's what drives conjugation.",
+  cards: [
+    { jp: "食べる", kana: "たべる", romaji: "taberu", en: "to eat", notes: "ru-verb" },
+    { jp: "飲む", kana: "のむ", romaji: "nomu", en: "to drink", notes: "u-verb" },
+    { jp: "見る", kana: "みる", romaji: "miru", en: "to see/watch", notes: "ru-verb" },
+    { jp: "聞く", kana: "きく", romaji: "kiku", en: "to listen/ask", notes: "u-verb" },
+    { jp: "話す", kana: "はなす", romaji: "hanasu", en: "to speak", notes: "u-verb" },
+    { jp: "読む", kana: "よむ", romaji: "yomu", en: "to read", notes: "u-verb" },
+    { jp: "書く", kana: "かく", romaji: "kaku", en: "to write", notes: "u-verb" },
+    { jp: "行く", kana: "いく", romaji: "iku", en: "to go", notes: "u-verb (irregular te-form: 行って)" },
+    { jp: "来る", kana: "くる", romaji: "kuru", en: "to come", notes: "irregular" },
+    { jp: "する", kana: "する", romaji: "suru", en: "to do", notes: "irregular" },
+    { jp: "買う", kana: "かう", romaji: "kau", en: "to buy", notes: "u-verb" },
+    { jp: "作る", kana: "つくる", romaji: "tsukuru", en: "to make", notes: "u-verb" },
+    { jp: "会う", kana: "あう", romaji: "au", en: "to meet", notes: "u-verb (takes に)" },
+    { jp: "待つ", kana: "まつ", romaji: "matsu", en: "to wait", notes: "u-verb" },
+    { jp: "帰る", kana: "かえる", romaji: "kaeru", en: "to return home", notes: "u-verb (looks like ru!)" },
+    { jp: "入る", kana: "はいる", romaji: "hairu", en: "to enter", notes: "u-verb (looks like ru!)" },
+    { jp: "起きる", kana: "おきる", romaji: "okiru", en: "to wake up", notes: "ru-verb" },
+    { jp: "寝る", kana: "ねる", romaji: "neru", en: "to sleep", notes: "ru-verb" },
+    { jp: "着る", kana: "きる", romaji: "kiru", en: "to wear (above waist)", notes: "ru-verb" },
+    { jp: "遊ぶ", kana: "あそぶ", romaji: "asobu", en: "to play/hang out", notes: "u-verb" },
+    { jp: "泳ぐ", kana: "およぐ", romaji: "oyogu", en: "to swim", notes: "u-verb" },
+    { jp: "歩く", kana: "あるく", romaji: "aruku", en: "to walk", notes: "u-verb" },
+    { jp: "走る", kana: "はしる", romaji: "hashiru", en: "to run", notes: "u-verb (looks like ru!)" },
+    { jp: "働く", kana: "はたらく", romaji: "hataraku", en: "to work", notes: "u-verb" },
+    { jp: "勉強する", kana: "べんきょうする", romaji: "benkyō suru", en: "to study", notes: "suru-verb" },
+    { jp: "分かる", kana: "わかる", romaji: "wakaru", en: "to understand", notes: "u-verb (takes が)" },
+    { jp: "知る", kana: "しる", romaji: "shiru", en: "to know", notes: "u-verb (looks like ru!)" },
+    { jp: "思う", kana: "おもう", romaji: "omō", en: "to think", notes: "u-verb" },
+    { jp: "言う", kana: "いう", romaji: "iu", en: "to say", notes: "u-verb" },
+    { jp: "住む", kana: "すむ", romaji: "sumu", en: "to live", notes: "u-verb (takes に)" },
+  ],
+};
+
+// ---------- Core adjectives ----------
+window.DECKS.adjectives = {
+  id: "adjectives",
+  title: "Core Adjectives",
+  emoji: "🎨",
+  description: "i-adjectives end in い (but not all い-ending words are i-adj!). na-adj need な before nouns.",
+  cards: [
+    // i-adjectives
+    { jp: "大きい", kana: "おおきい", romaji: "ōkii", en: "big", notes: "i-adj" },
+    { jp: "小さい", kana: "ちいさい", romaji: "chiisai", en: "small", notes: "i-adj" },
+    { jp: "新しい", kana: "あたらしい", romaji: "atarashii", en: "new", notes: "i-adj" },
+    { jp: "古い", kana: "ふるい", romaji: "furui", en: "old (things)", notes: "i-adj" },
+    { jp: "良い", kana: "いい / よい", romaji: "ii / yoi", en: "good", notes: "i-adj (IRREGULAR: past = よかった)" },
+    { jp: "悪い", kana: "わるい", romaji: "warui", en: "bad", notes: "i-adj" },
+    { jp: "高い", kana: "たかい", romaji: "takai", en: "high / expensive", notes: "i-adj" },
+    { jp: "安い", kana: "やすい", romaji: "yasui", en: "cheap", notes: "i-adj" },
+    { jp: "美味しい", kana: "おいしい", romaji: "oishii", en: "delicious", notes: "i-adj" },
+    { jp: "忙しい", kana: "いそがしい", romaji: "isogashii", en: "busy", notes: "i-adj" },
+    { jp: "面白い", kana: "おもしろい", romaji: "omoshiroi", en: "interesting / funny", notes: "i-adj" },
+    { jp: "難しい", kana: "むずかしい", romaji: "muzukashii", en: "difficult", notes: "i-adj" },
+    { jp: "易しい", kana: "やさしい", romaji: "yasashii", en: "easy / kind", notes: "i-adj" },
+    { jp: "暑い", kana: "あつい", romaji: "atsui", en: "hot (weather)", notes: "i-adj" },
+    { jp: "寒い", kana: "さむい", romaji: "samui", en: "cold (weather)", notes: "i-adj" },
+    // na-adjectives
+    { jp: "きれい", kana: "きれい", romaji: "kirei", en: "pretty / clean", notes: "na-adj (ends in い but IS na!)" },
+    { jp: "元気", kana: "げんき", romaji: "genki", en: "energetic / well", notes: "na-adj" },
+    { jp: "静か", kana: "しずか", romaji: "shizuka", en: "quiet", notes: "na-adj" },
+    { jp: "賑やか", kana: "にぎやか", romaji: "nigiyaka", en: "lively", notes: "na-adj" },
+    { jp: "暇", kana: "ひま", romaji: "hima", en: "free (time)", notes: "na-adj" },
+    { jp: "大変", kana: "たいへん", romaji: "taihen", en: "tough / a lot", notes: "na-adj" },
+    { jp: "好き", kana: "すき", romaji: "suki", en: "liked", notes: "na-adj (takes が)" },
+    { jp: "嫌い", kana: "きらい", romaji: "kirai", en: "disliked", notes: "na-adj (ends in い but IS na!)" },
+    { jp: "有名", kana: "ゆうめい", romaji: "yūmei", en: "famous", notes: "na-adj" },
+    { jp: "便利", kana: "べんり", romaji: "benri", en: "convenient", notes: "na-adj" },
+    { jp: "簡単", kana: "かんたん", romaji: "kantan", en: "simple / easy", notes: "na-adj" },
+    { jp: "安全", kana: "あんぜん", romaji: "anzen", en: "safe", notes: "na-adj" },
+    { jp: "大切", kana: "たいせつ", romaji: "taisetsu", en: "important", notes: "na-adj" },
+  ],
+};
+
+// ---------- Everyday Nouns (for practice sentences) ----------
+window.DECKS.nounsDaily = {
+  id: "nounsDaily",
+  title: "Everyday Nouns",
+  emoji: "🏠",
+  description: "High-frequency nouns so you can build sentences for the speaking drills.",
+  cards: [
+    { jp: "水", kana: "みず", romaji: "mizu", en: "water" },
+    { jp: "お茶", kana: "おちゃ", romaji: "ocha", en: "tea" },
+    { jp: "コーヒー", kana: "コーヒー", romaji: "kōhī", en: "coffee" },
+    { jp: "ご飯", kana: "ごはん", romaji: "gohan", en: "rice / meal" },
+    { jp: "朝ご飯", kana: "あさごはん", romaji: "asagohan", en: "breakfast" },
+    { jp: "昼ご飯", kana: "ひるごはん", romaji: "hirugohan", en: "lunch" },
+    { jp: "晩ご飯", kana: "ばんごはん", romaji: "bangohan", en: "dinner" },
+    { jp: "学校", kana: "がっこう", romaji: "gakkō", en: "school" },
+    { jp: "家", kana: "いえ / うち", romaji: "ie / uchi", en: "house / home" },
+    { jp: "店", kana: "みせ", romaji: "mise", en: "shop" },
+    { jp: "駅", kana: "えき", romaji: "eki", en: "station" },
+    { jp: "電車", kana: "でんしゃ", romaji: "densha", en: "train" },
+    { jp: "車", kana: "くるま", romaji: "kuruma", en: "car" },
+    { jp: "本", kana: "ほん", romaji: "hon", en: "book" },
+    { jp: "映画", kana: "えいが", romaji: "eiga", en: "movie" },
+    { jp: "音楽", kana: "おんがく", romaji: "ongaku", en: "music" },
+    { jp: "友達", kana: "ともだち", romaji: "tomodachi", en: "friend" },
+    { jp: "家族", kana: "かぞく", romaji: "kazoku", en: "family" },
+    { jp: "仕事", kana: "しごと", romaji: "shigoto", en: "work / job" },
+    { jp: "時間", kana: "じかん", romaji: "jikan", en: "time" },
+    { jp: "今日", kana: "きょう", romaji: "kyō", en: "today" },
+    { jp: "明日", kana: "あした", romaji: "ashita", en: "tomorrow" },
+    { jp: "昨日", kana: "きのう", romaji: "kinō", en: "yesterday" },
+    { jp: "朝", kana: "あさ", romaji: "asa", en: "morning" },
+    { jp: "夜", kana: "よる", romaji: "yoru", en: "night" },
+  ],
+};

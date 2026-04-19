@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>日本語 Study — Samira's Japanese Module</title>
+  <meta name="description" content="A personal Japanese study module: flashcards with SRS, quizzes, particle & conjugation drills, and timed speaking practice." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Quicksand:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="site">
+    <h1>日本語 Study 📚</h1>
+    <p class="subtitle">Flashcards · Quizzes · Particle &amp; Conjugation Drills · Speaking Practice</p>
+  </header>
+
+  <main>
+    <nav class="tabs" role="tablist">
+      <button class="tab-btn active" data-tab="home">🏠 Home</button>
+      <button class="tab-btn" data-tab="flashcards">🃏 Flashcards</button>
+      <button class="tab-btn" data-tab="quiz">📝 Quiz</button>
+      <button class="tab-btn" data-tab="conjugate">🔧 Conjugate</button>
+      <button class="tab-btn" data-tab="speaking">🎙️ Speaking</button>
+      <button class="tab-btn" data-tab="reference">📖 Reference</button>
+    </nav>
+
+    <!-- HOME -->
+    <section class="panel active" id="panel-home">
+      <div class="section">
+        <h2>Welcome back, Samira 👋</h2>
+        <p class="muted">You're calibrated at <strong>upper N5 / early N4</strong>. Drills target your weak spots: particles, verb conjugation speed, i-adj vs na-adj, and vocab recall.</p>
+        <div class="stats-row" id="home-stats"></div>
+        <div class="controls-row" style="margin-top:14px">
+          <button class="btn" data-goto="flashcards">🃏 Start flashcards</button>
+          <button class="btn ghost" data-goto="speaking">🎙️ Speaking warmup</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>How to use this module</h2>
+        <p class="muted">A suggested 20-minute daily loop:</p>
+        <ul class="tips">
+          <li><strong>5 min</strong> · Flashcards — do today's due cards (SRS surfaces them automatically).</li>
+          <li><strong>5 min</strong> · Quiz — one round of particles + one round of vocab.</li>
+          <li><strong>5 min</strong> · Conjugation — 10 verbs + 5 adjectives, out loud.</li>
+          <li><strong>5 min</strong> · Speaking — 3-5 prompts under timer. Don't pause to think. Output &gt; perfection.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- FLASHCARDS -->
+    <section class="panel" id="panel-flashcards">
+      <div class="section">
+        <h2>🃏 Flashcards (SRS)</h2>
+        <p class="muted">Pick a deck. Rate yourself honestly — cards you struggle with come back sooner.</p>
+        <div class="deck-grid" id="deck-picker"></div>
+      </div>
+
+      <div class="section" id="flashcard-stage" style="display:none">
+        <div class="score-bar">
+          <span id="fc-progress">0 / 0</span>
+          <span class="srs-meta" id="fc-srs-meta"></span>
+          <button class="btn ghost small" id="fc-reset">↺ Reset deck</button>
+        </div>
+        <div class="flashcard-wrap">
+          <div class="flashcard" id="flashcard">
+            <div class="flashcard-inner">
+              <div class="flashcard-face front">
+                <div class="jp-main" id="fc-front"></div>
+                <div class="kana" id="fc-kana"></div>
+                <div class="hint-flip">tap / space to flip</div>
+              </div>
+              <div class="flashcard-face back">
+                <div class="en" id="fc-en"></div>
+                <div class="romaji" id="fc-romaji"></div>
+                <div class="notes" id="fc-notes"></div>
+                <div class="hint-flip">rate yourself below</div>
+              </div>
+            </div>
+          </div>
+          <div class="rating-row" id="fc-ratings">
+            <button class="rating-btn again" data-rating="again">Again <span class="kbd">1</span></button>
+            <button class="rating-btn hard"  data-rating="hard">Hard <span class="kbd">2</span></button>
+            <button class="rating-btn good"  data-rating="good">Good <span class="kbd">3</span></button>
+            <button class="rating-btn easy"  data-rating="easy">Easy <span class="kbd">4</span></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUIZ -->
+    <section class="panel" id="panel-quiz">
+      <div class="section">
+        <h2>📝 Quiz Mode</h2>
+        <p class="muted">Multiple choice. Pick a quiz type:</p>
+        <div class="controls-row">
+          <select class="select" id="quiz-type">
+            <option value="particle">Particles (は/が/を/に/で…)</option>
+            <option value="vocab-jp-en">Vocab: JP → EN</option>
+            <option value="vocab-en-jp">Vocab: EN → JP</option>
+          </select>
+          <select class="select" id="quiz-deck"></select>
+          <button class="btn" id="quiz-start">Start quiz</button>
+        </div>
+      </div>
+
+      <div class="section" id="quiz-stage" style="display:none">
+        <div class="score-bar">
+          <span id="quiz-progress">0 / 10</span>
+          <span id="quiz-score">Score: 0</span>
+          <button class="btn ghost small" id="quiz-quit">End quiz</button>
+        </div>
+        <div class="quiz-question" id="quiz-q"></div>
+        <div class="options" id="quiz-options"></div>
+        <div class="feedback" id="quiz-feedback" style="display:none"></div>
+      </div>
+    </section>
+
+    <!-- CONJUGATION -->
+    <section class="panel" id="panel-conjugate">
+      <div class="section">
+        <h2>🔧 Conjugation Drill</h2>
+        <p class="muted">Type the conjugated form in kana. Don't peek — reveal only if stuck.</p>
+        <div class="controls-row">
+          <select class="select" id="conj-kind">
+            <option value="verb">Verbs</option>
+            <option value="adj">Adjectives (i / na)</option>
+          </select>
+          <select class="select" id="conj-form"></select>
+          <button class="btn" id="conj-start">Start drill</button>
+        </div>
+      </div>
+
+      <div class="section" id="conj-stage" style="display:none">
+        <div class="score-bar">
+          <span id="conj-progress">0 / 10</span>
+          <span id="conj-score">Correct: 0</span>
+          <button class="btn ghost small" id="conj-quit">End drill</button>
+        </div>
+        <div class="quiz-question">
+          <div class="prompt-jp" id="conj-prompt"></div>
+          <div class="prompt-en" id="conj-sub"></div>
+          <input class="drill-input" id="conj-input" placeholder="答えをひらがなで..." autocomplete="off" autocapitalize="off" spellcheck="false" />
+          <div class="controls-row" style="justify-content:center">
+            <button class="btn small" id="conj-check">Check</button>
+            <button class="btn ghost small" id="conj-reveal">Reveal</button>
+            <button class="btn ghost small" id="conj-skip">Skip →</button>
+          </div>
+          <div class="feedback" id="conj-feedback" style="display:none"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPEAKING -->
+    <section class="panel" id="panel-speaking">
+      <div class="section">
+        <h2>🎙️ Speaking Practice</h2>
+        <p class="muted">A prompt + a countdown. Say your answer out loud BEFORE the timer ends. Don't wait to feel ready.</p>
+        <ul class="tips" id="speaking-tips"></ul>
+        <div class="controls-row">
+          <select class="select" id="speak-seconds">
+            <option value="1">1× time (default)</option>
+            <option value="1.5">1.5× (easier)</option>
+            <option value="0.75">0.75× (harder)</option>
+            <option value="0.5">0.5× (pro mode)</option>
+          </select>
+          <button class="btn" id="speak-start">Begin</button>
+        </div>
+      </div>
+
+      <div class="section" id="speak-stage" style="display:none">
+        <div class="speaking-card">
+          <div class="muted" id="speak-index"></div>
+          <div class="speaking-prompt" id="speak-prompt"></div>
+          <div class="timer-ring" id="speak-timer"><div class="digits" id="speak-digits">10</div></div>
+          <div class="reveal hidden" id="speak-reveal">
+            <div class="jp" id="speak-sample"></div>
+            <div class="en" id="speak-sample-en"></div>
+          </div>
+          <div class="controls-row" style="justify-content:center; margin-top:14px">
+            <button class="btn ghost small" id="speak-show">Show sample answer</button>
+            <button class="btn small" id="speak-next">Next prompt →</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REFERENCE -->
+    <section class="panel" id="panel-reference">
+      <div class="section">
+        <h2>📖 Particle Reference</h2>
+        <p class="muted">The big five (plus friends). Tap to expand examples when browsing on a phone.</p>
+        <div class="particle-grid" id="particle-grid"></div>
+      </div>
+      <div class="section">
+        <h2>🔧 Conjugation Cheat Sheet</h2>
+        <p class="muted">The patterns the drill is quizzing you on:</p>
+        <div id="conj-ref"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site">
+    <p>Made for getting fluent. Add new decks in <code>data/vocab.js</code>, grammar in <code>data/grammar.js</code>, prompts in <code>data/speaking.js</code>.</p>
+  </footer>
+
+  <!-- Data files -->
+  <script src="data/vocab.js"></script>
+  <script src="data/grammar.js"></script>
+  <script src="data/speaking.js"></script>
+  <!-- App logic -->
+  <script src="js/storage.js"></script>
+  <script src="js/flashcards.js"></script>
+  <script src="js/quiz.js"></script>
+  <script src="js/conjugation.js"></script>
+  <script src="js/speaking.js"></script>
+  <script src="js/reference.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
