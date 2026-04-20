@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#E8447A">
+<title>My Workout Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FDF0F5;
+    --card: #FFFFFF;
+    --pink: #E8447A;
+    --pink-deep: #C42C60;
+    --pink-light: #FDE8F0;
+    --pink-mid: #F4A0BE;
+    --pink-pale: #FFF5F9;
+    --rose: #FF6B9D;
+    --mauve: #9B5E7A;
+    --mauve-light: #F5EAF0;
+    --green: #2E8B6A;
+    --green-light: #E4F5EE;
+    --blue: #4A7EC7;
+    --blue-light: #EBF2FF;
+    --text: #2A1520;
+    --muted: #9A7080;
+    --border: #F0D8E4;
+    --gold-light: #FDF5E0;
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-top: env(safe-area-inset-top, 0px);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    font-family: 'Nunito', sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding-bottom: calc(90px + var(--safe-bottom));
+    -webkit-font-smoothing: antialiased;
+    overscroll-behavior: none;
+  }
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, #E8447A 0%, #C42C60 55%, #9B2050 100%);
+    padding: calc(1.5rem + var(--safe-top)) 1.25rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: 20px; left: -20px;
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+  }
+  .header-label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 6px;
+    position: relative; z-index: 1;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 7vw, 34px);
+    color: #fff;
+    line-height: 1.15;
+    position: relative; z-index: 1;
+  }
+  header h1 em { font-style: italic; color: #FFB8D4; }
+  .header-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    margin-top: 6px;
+    position: relative; z-index: 1;
+    font-weight: 500;
+  }
+  .stats-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 1rem;
+    position: relative; z-index: 1;
+    flex-wrap: wrap;
+  }
+  .stat-pill {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.22);
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.88);
+    font-weight: 700;
+  }
+  /* ── PROGRESS CARD ── */
+  .progress-section {
+    background: #fff;
+    margin: -1.25rem 1rem 0;
+    border-radius: 18px;
+    padding: 1rem 1.1rem;
+    box-shadow: 0 4px 24px rgba(232,68,122,0.13);
+    position: relative; z-index: 2;
+  }
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .progress-title {
+    font-size: 11px; font-weight: 800;
+    color: var(--muted);
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+  .progress-count { font-size: 13px; font-weight: 800; color: var(--pink); }
+  .progress-bar {
+    height: 7px;
+    background: var(--pink-light);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--pink-mid), var(--pink));
+    border-radius: 999px;
+    transition: width 0.6s cubic-bezier(0.34,1.56,0.64,1);
+    width: 0%;
+  }
+  .day-dots {
+    display: flex; gap: 5px;
+    margin-top: 8px;
+    justify-content: center;
+  }
+  .day-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--pink-light);
+    transition: background 0.3s;
+  }
+  .day-dot.done { background: var(--pink); }
+  /* ── DAY NAV ── */
+  .week-nav {
+    display: flex;
+    gap: 7px;
+    padding: 1.1rem 1rem 0.4rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .week-nav::-webkit-scrollbar { display: none; }
+  .day-tab {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 9px 8px;
+    border-radius: 14px;
+    font-size: 10px;
+    font-weight: 800;
+    border: 1.5px solid var(--border);
+    background: var(--card);
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 46px;
+    touch-action: manipulation;
+  }
+  .day-tab .tab-icon { font-size: 18px; }
+  .day-tab.active {
+    background: var(--pink);
+    border-color: var(--pink);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(232,68,122,0.35);
+    transform: translateY(-2px);
+  }
+  .day-tab.done {
+    background: var(--green-light);
+    border-color: var(--green);
+    color: var(--green);
+  }
+  /* ── CONTENT ── */
+  .content { padding: 0.75rem 1rem; }
+  /* ── DAY HERO ── */
+  .day-hero {
+    background: linear-gradient(135deg, var(--pink-light) 0%, var(--mauve-light) 100%);
+    border-radius: 18px;
+    border: 1.5px solid var(--border);
+    padding: 1.1rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .day-hero::after {
+    content: '';
+    position: absolute;
+    right: -12px; bottom: -12px;
+    width: 70px; height: 70px;
+    border-radius: 50%;
+    background: rgba(232,68,122,0.07);
+  }
+  .day-hero-icon {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 2px 10px rgba(232,68,122,0.15);
+    flex-shrink: 0;
+  }
+  .day-hero-info { flex: 1; min-width: 0; }
+  .day-hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .day-hero-sub {
+    font-size: 11px;
+    color: var(--mauve);
+    margin-top: 2px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .day-hero-badge {
+    font-size: 9px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 999px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .badge-strength { background: var(--pink); color: #fff; }
+  .badge-walk { background: var(--blue-light); color: var(--blue); }
+  .badge-rest { background: #FFF0F8; color: #C47A9A; }
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin: 1.1rem 0 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  /* ── EXERCISE CARD ── */
+  .exercise-card {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    margin-bottom: 8px;
+    overflow: hidden;
+    transition: box-shadow 0.2s, border-color 0.2s;
+    animation: fadeUp 0.25s ease both;
+  }
+  .exercise-card.completed {
+    border-color: var(--green);
+    background: var(--green-light);
+  }
+  /* Main row — big touch target */
+  .exercise-main {
+    display: flex;
+    align-items: center;
+    padding: 14px 12px;
+    gap: 10px;
+    min-height: 64px;
+  }
+  /* Check circle — large touch target */
+  .check-circle {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--pink-mid);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s;
+    background: var(--pink-pale);
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  .exercise-card.completed .check-circle {
+    background: var(--green);
+    border-color: var(--green);
+  }
+  .check-circle svg { display: none; }
+  .exercise-card.completed .check-circle svg { display: block; }
+  .exercise-text { flex: 1; min-width: 0; }
+  .exercise-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .exercise-card.completed .exercise-name {
+    color: var(--green);
+    text-decoration: line-through;
+    text-decoration-color: rgba(46,139,106,0.4);
+  }
+  .exercise-equip {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+    font-weight: 600;
+  }
+  .exercise-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+  .exercise-sets {
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--pink);
+    background: var(--pink-light);
+    padding: 3px 9px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .exercise-card.completed .exercise-sets {
+    background: var(--green-light);
+    color: var(--green);
+  }
+  /* Expand button — big touch target */
+  .expand-btn {
+    border: 1px solid var(--border);
+    background: var(--pink-pale);
+    width: 32px; height: 32px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--pink);
+    font-size: 11px;
+    transition: background 0.15s;
+    touch-action: manipulation;
+  }
+  .expand-btn:active { background: var(--pink-light); }
+  /* ── DETAIL PANEL ── */
+  .exercise-detail {
+    display: none;
+    border-top: 1.5px solid var(--border);
+    padding: 14px 12px;
+    flex-direction: column;
+    gap: 14px;
+    background: var(--pink-pale);
+  }
+  .exercise-detail.open { display: flex; }
+  .detail-label {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 5px;
+  }
+  .detail-text {
+    font-size: 13px;
+    color: var(--mauve);
+    line-height: 1.7;
+    font-weight: 500;
+  }
+  /* ── VIDEO ── */
+  .video-label {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--pink);
+    margin-bottom: 7px;
+  }
+  .video-wrap {
+    position: relative;
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #111;
+    cursor: pointer;
+  }
+  .video-thumb-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+  }
+  .video-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .video-play-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.18);
+    transition: background 0.2s;
+  }
+  .video-wrap:active .video-play-overlay { background: rgba(0,0,0,0.28); }
+  .video-play-btn {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: rgba(232,68,122,0.92);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+    transition: transform 0.15s;
+    pointer-events: none;
+  }
+  .video-wrap:active .video-play-btn { transform: scale(0.94); }
+  .video-iframe {
+    display: none;
+    width: 100%;
+    aspect-ratio: 16/9;
+    border: none;
+  }
+  .video-wrap.playing .video-thumb-container { display: none; }
+  .video-wrap.playing .video-iframe { display: block; }
+  /* ── REST / WALK CARD ── */
+  .rest-card {
+    background: #fff;
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem 1.25rem;
+    text-align: center;
+  }
+  .rest-icon-wrap {
+    width: 64px; height: 64px;
+    border-radius: 20px;
+    background: var(--pink-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 12px;
+    box-shadow: 0 4px 16px rgba(232,68,122,0.15);
+  }
+  .rest-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .rest-card p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+    font-weight: 500;
+  }
+  /* ── TIP ── */
+  .tip-pill {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    background: var(--gold-light);
+    border: 1.5px solid #F0D890;
+    border-radius: 14px;
+    padding: 11px 13px;
+    margin-top: 10px;
+    font-size: 13px;
+    color: #7A5C10;
+    line-height: 1.6;
+    font-weight: 600;
+  }
+  .tip-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+  /* ── COMPLETE BUTTON ── */
+  .complete-day-btn {
+    display: block;
+    width: 100%;
+    margin-top: 1.25rem;
+    padding: 18px 16px;
+    background: linear-gradient(135deg, var(--rose), var(--pink-deep));
+    color: #fff;
+    font-family: 'Nunito', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+    box-shadow: 0 6px 22px rgba(232,68,122,0.35);
+    touch-action: manipulation;
+    -webkit-appearance: none;
+  }
+  .complete-day-btn:active { transform: scale(0.97); }
+  .complete-day-btn:disabled {
+    background: linear-gradient(135deg, #3BAF85, var(--green));
+    box-shadow: 0 6px 20px rgba(46,139,106,0.28);
+    cursor: default;
+    transform: none;
+    opacity: 1;
+  }
+  /* ── MOTIVATIONAL QUOTE ── */
+  .motive-strip {
+    text-align: center;
+    padding: 1.25rem 1.5rem 0;
+    font-size: 14px;
+    color: var(--muted);
+    font-style: italic;
+    font-family: 'Playfair Display', serif;
+    line-height: 1.6;
+  }
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  /* ── RESPONSIVE TWEAKS ── */
+  @media (min-width: 480px) {
+    header { padding: calc(2rem + var(--safe-top)) 1.5rem 3.5rem; }
+    header h1 { font-size: 32px; }
+    .content { padding: 0.75rem 1.25rem; }
+    .week-nav { padding: 1.25rem 1.25rem 0.5rem; }
+    .progress-section { margin: -1.4rem 1.25rem 0; }
+    .exercise-main { padding: 14px 14px; }
+    .exercise-detail { padding: 14px 14px; }
+  }
+  @media (min-width: 640px) {
+    body { max-width: 540px; margin: 0 auto; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-label">Your Personal Plan</div>
+  <h1>Strong &amp; <em>Beautiful</em></h1>
+  <p class="header-sub">3 strength days · Daily walks · Circuit training</p>
+  <div class="stats-row">
+    <div class="stat-pill">~35 min sessions</div>
+    <div class="stat-pill">3× strength</div>
+    <div class="stat-pill">Fat-loss focus</div>
+  </div>
+</header>
+<div class="progress-section">
+  <div class="progress-header">
+    <span class="progress-title">Weekly progress</span>
+    <span class="progress-count" id="progress-text">0 / 7</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="day-dots" id="day-dots"></div>
+</div>
+<div class="week-nav" id="week-nav"></div>
+<div class="content" id="content"></div>
+<div class="motive-strip" id="motive"></div>
+<script>
+const QUOTES = [
+  "Every rep is a promise you keep to yourself.",
+  "You don't have to be perfect. You just have to show up.",
+  "Strong women lift each other — and some weights too.",
+  "Progress, not perfection.",
+  "Your body hears everything your mind says. Say kind things.",
+  "She believed she could, so she did."
+];
+function ytID(url) {
+  const m = url.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : '';
+}
+const DAYS = [
+  {
+    id:0, name:"Monday", short:"Mon", type:"strength", icon:"🏋️",
+    label:"Lower body + core", meta:"3 rounds · ~35 min",
+    sections:[
+      { label:"Warm-up — 5 min", exercises:[
+        { name:"Bodyweight squats", equip:"No equipment", sets:"2 × 10", tip:"Stand feet shoulder-width apart, sit back like you're lowering into a chair. Keep your chest up and knees tracking over your toes.", video:"https://www.youtube.com/watch?v=YaXPRqUwItQ" },
+        { name:"Hip circles & leg swings", equip:"No equipment", sets:"1 min", tip:"Hold a wall for balance. Swing each leg forward and back, then side to side. Loosens hip flexors before lifting.", video:"https://www.youtube.com/watch?v=e1YPSxKzXgU" },
+      ]},
+      { label:"Circuit — 3 rounds", exercises:[
+        { name:"Barbell squat", equip:"Barbell + plates", sets:"12–15 reps", tip:"Place bar across upper back (not neck). Feet shoulder-width, toes slightly out. Squat until thighs are parallel to floor. Drive through heels to stand. Start light — form first!", video:"https://www.youtube.com/watch?v=ultWZbUMPL8" },
+        { name:"Romanian deadlift", equip:"Barbell + plates", sets:"12 reps", tip:"Hold bar at hip level, soft bend in knees. Hinge at hips, push them back as bar slides down your thighs. Feel the stretch in your hamstrings, then drive hips forward to stand.", video:"https://www.youtube.com/watch?v=jEy_czb3RKA" },
+        { name:"Medicine ball Russian twist", equip:"Medicine ball", sets:"20 reps total", tip:"Sit on floor, knees bent, lean back slightly. Hold ball with both hands and rotate side to side. For more burn, lift your feet off the floor.", video:"https://www.youtube.com/watch?v=wkD8rjkodUI" },
+        { name:"Glute bridge", equip:"No equipment", sets:"15 reps", tip:"Lie on back, knees bent, feet flat. Press through heels to lift hips until body forms a straight line from shoulders to knees. Squeeze glutes hard at the top!", video:"https://www.youtube.com/watch?v=wPM8icPu6H8" },
+        { name:"Medicine ball wood chop", equip:"Medicine ball", sets:"10 each side", tip:"Stand feet shoulder-width. Hold ball with both hands at one hip, then sweep diagonally across your body up to the opposite shoulder. Core stays tight throughout.", video:"https://www.youtube.com/watch?v=1bZPpVGwRCg" },
+      ]}
+    ]
+  },
+  { id:1, name:"Tuesday", short:"Tue", type:"walk", icon:"🚶‍♀️", label:"Walk day", meta:"60 min treadmill", sections:[] },
+  {
+    id:2, name:"Wednesday", short:"Wed", type:"strength", icon:"💪",
+    label:"Upper body + core", meta:"3 rounds · ~35 min",
+    sections:[
+      { label:"Warm-up — 5 min", exercises:[
+        { name:"Arm circles & shoulder rolls", equip:"No equipment", sets:"1 min each direction", tip:"Start small circles forward, then backward. Then roll shoulders back slowly. Warms up the shoulder joint before any pressing.", video:"https://www.youtube.com/watch?v=1ZSLsP3TPAE" },
+        { name:"Push-up plank hold", equip:"No equipment", sets:"30 sec", tip:"Hold top of push-up position: wrists under shoulders, body in a straight line, core tight. Don't let hips sag or pike up. Breathe!", video:"https://www.youtube.com/watch?v=ASdvN_XEl_c" },
+      ]},
+      { label:"Circuit — 3 rounds", exercises:[
+        { name:"Dumbbell bicep curl", equip:"Adjustable dumbbell handle", sets:"12–15 reps", tip:"Stand tall, elbows close to sides. Curl the weight up to shoulder level, squeeze at top, lower slowly. Slow lowering gives you more results!", video:"https://www.youtube.com/watch?v=ykJmrZ5v0Oo" },
+        { name:"Bent-over dumbbell row", equip:"Adjustable dumbbell handle", sets:"12 each side", tip:"Place one knee and hand on a chair for support. Hold dumbbell in other hand. Pull elbow up toward ceiling, keeping it close to your body. Lower slowly.", video:"https://www.youtube.com/watch?v=roCP6wCXPqo" },
+        { name:"Medicine ball overhead press", equip:"Medicine ball", sets:"12 reps", tip:"Stand feet hip-width. Hold ball at chest level, press straight overhead until arms are extended. Lower with control. Great for shoulders and triceps.", video:"https://www.youtube.com/watch?v=Gu1t7X1yHOM" },
+        { name:"Incline push-up", equip:"Chair or couch edge", sets:"10–12 reps", tip:"Place hands on the seat of a chair or arm of couch. Body in straight line. Lower chest toward surface, push back up. Build up to floor push-ups over time!", video:"https://www.youtube.com/watch?v=_l3ySVKYVJ8" },
+        { name:"Medicine ball tap-down", equip:"Medicine ball", sets:"10 reps", tip:"Hold ball overhead standing tall. Slowly lower it toward the floor while hinging at hips, then raise back up. Controlled movement — no slamming needed!", video:"https://www.youtube.com/watch?v=ykJmrZ5v0Oo" },
+      ]}
+    ]
+  },
+  { id:3, name:"Thursday", short:"Thu", type:"walk", icon:"🚶‍♀️", label:"Walk day", meta:"60 min treadmill", sections:[] },
+  {
+    id:4, name:"Friday", short:"Fri", type:"strength", icon:"🔥",
+    label:"Full body circuit", meta:"3 rounds · ~40 min",
+    sections:[
+      { label:"Warm-up — 5 min", exercises:[
+        { name:"Marching + hip hinge", equip:"No equipment", sets:"2 min", tip:"March lifting knees high for 1 min, then do 10 slow hip hinges (push hips back, flat back, return to standing). Gets your whole body warm and ready.", video:"https://www.youtube.com/watch?v=e1YPSxKzXgU" },
+      ]},
+      { label:"Circuit — 3 rounds", exercises:[
+        { name:"Goblet squat", equip:"Barbell or dumbbell handle", sets:"12 reps", tip:"Hold weight at chest with both hands. Feet slightly wider than hips, toes out. Squat deep — elbows inside knees at bottom. Drive up through heels.", video:"https://www.youtube.com/watch?v=MxsFDhcyFyE" },
+        { name:"Dumbbell shoulder press", equip:"Adjustable dumbbell handle", sets:"12 reps", tip:"Hold dumbbell at shoulder height. Press straight up overhead until arm is extended. Lower slowly back to start. Keep core tight — don't arch your lower back.", video:"https://www.youtube.com/watch?v=qEwKCR5JCog" },
+        { name:"Lunge with twist", equip:"Medicine ball", sets:"10 each side", tip:"Step forward into a lunge, hold ball at chest. At the bottom of the lunge, rotate your torso toward the front leg. Return to start and switch legs.", video:"https://www.youtube.com/watch?v=3Tg5ydPJEMk" },
+        { name:"Barbell bent-over row", equip:"Barbell + plates", sets:"12 reps", tip:"Hinge forward at hips, back flat, bar hanging at arms length. Pull bar to lower chest, elbows flare out slightly. Squeeze shoulder blades together at the top.", video:"https://www.youtube.com/watch?v=FWJR5Ve8bnQ" },
+        { name:"Plank hold", equip:"No equipment", sets:"30–45 sec", tip:"Forearms on floor, elbows under shoulders. Body in one straight line. Breathe steadily. Squeeze abs and glutes. Try to add 5 seconds each week!", video:"https://www.youtube.com/watch?v=ASdvN_XEl_c" },
+      ]}
+    ]
+  },
+  { id:5, name:"Saturday", short:"Sat", type:"rest", icon:"🌸", label:"Rest or light activity", meta:"Optional stretch or walk", sections:[] },
+  { id:6, name:"Sunday", short:"Sun", type:"rest", icon:"☁️", label:"Rest day", meta:"Full recovery", sections:[] }
+];
+let currentDay = (() => { const d = new Date().getDay(); return d === 0 ? 6 : d - 1; })();
+let completedDays = [], completedExercises = [], expandedExercises = {};
+try {
+  completedDays = JSON.parse(localStorage.getItem('pw_days') || '[]');
+  completedExercises = JSON.parse(localStorage.getItem('pw_ex') || '[]');
+} catch(e) {}
+function save() {
+  try {
+    localStorage.setItem('pw_days', JSON.stringify(completedDays));
+    localStorage.setItem('pw_ex', JSON.stringify(completedExercises));
+  } catch(e) {}
+}
+function updateProgress() {
+  const count = completedDays.length;
+  document.getElementById('progress-text').textContent = count + ' / 7';
+  document.getElementById('progress-fill').style.width = Math.round((count / 7) * 100) + '%';
+  const dots = document.getElementById('day-dots');
+  dots.innerHTML = '';
+  DAYS.forEach((d, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'day-dot' + (completedDays.includes('day-' + i) ? ' done' : '');
+    dots.appendChild(dot);
+  });
+}
+function renderNav() {
+  const nav = document.getElementById('week-nav');
+  nav.innerHTML = '';
+  DAYS.forEach((d, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'day-tab' + (completedDays.includes('day-' + i) ? ' done' : '') + (i === currentDay ? ' active' : '');
+    btn.innerHTML = `<span class="tab-icon">${completedDays.includes('day-'+i) ? '✓' : d.icon}</span><span>${d.short}</span>`;
+    btn.onclick = () => {
+      currentDay = i;
+      renderNav(); renderDay();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+    nav.appendChild(btn);
+  });
+  // Auto-scroll active tab into view
+  setTimeout(() => {
+    const active = nav.querySelector('.active');
+    if (active) active.scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'nearest' });
+  }, 50);
+}
+function makeVideoWidget(videoUrl) {
+  const id = ytID(videoUrl);
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = `<div class="video-label">Exercise demo</div>`;
+  const vw = document.createElement('div');
+  vw.className = 'video-wrap';
+  if (!id) {
+    vw.innerHTML = `<div style="padding:18px;color:#fff;text-align:center;font-size:13px;">Video unavailable. <a href="${videoUrl}" target="_blank" rel="noopener" style="color:#FFB8D4;">Open on YouTube ↗</a></div>`;
+    wrapper.appendChild(vw);
+    return wrapper;
+  }
+  // Try high-quality thumbnail; fall back if YouTube returns the gray placeholder
+  const thumbHQ = `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+  const thumbMQ = `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
+  const thumbContainer = document.createElement('div');
+  thumbContainer.className = 'video-thumb-container';
+  thumbContainer.innerHTML = `
+    <img class="video-thumb" src="${thumbHQ}" alt="Exercise demo" loading="lazy" referrerpolicy="no-referrer"
+         onerror="this.onerror=null;this.src='${thumbMQ}';">
+    <div class="video-play-overlay">
+      <div class="video-play-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </div>
+  `;
+  const iframe = document.createElement('iframe');
+  iframe.className = 'video-iframe';
+  iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+  iframe.setAttribute('allowfullscreen', '');
+  iframe.setAttribute('title', 'Exercise demo');
+  // Use youtube-nocookie for better embeddability + privacy
+  iframe.dataset.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+  // External fallback link in case the video can't be embedded
+  const fallback = document.createElement('a');
+  fallback.href = videoUrl;
+  fallback.target = '_blank';
+  fallback.rel = 'noopener';
+  fallback.style.cssText = 'display:block;text-align:center;padding:8px;font-size:11px;color:var(--muted);text-decoration:none;font-weight:700;';
+  fallback.textContent = 'Open on YouTube ↗';
+  vw.appendChild(thumbContainer);
+  vw.appendChild(iframe);
+  vw.addEventListener('click', () => {
+    if (!vw.classList.contains('playing')) {
+      iframe.src = iframe.dataset.src;
+      vw.classList.add('playing');
+    }
+  });
+  wrapper.appendChild(vw);
+  wrapper.appendChild(fallback);
+  return wrapper;
+}
+function renderDay() {
+  const d = DAYS[currentDay];
+  const c = document.getElementById('content');
+  c.innerHTML = '';
+  // Hero
+  const hero = document.createElement('div');
+  hero.className = 'day-hero';
+  hero.innerHTML = `
+    <div class="day-hero-icon">${d.icon}</div>
+    <div class="day-hero-info">
+      <div class="day-hero-name">${d.name}</div>
+      <div class="day-hero-sub">${d.label} · ${d.meta}</div>
+    </div>
+    <span class="day-hero-badge badge-${d.type}">${d.type==='strength'?'Strength':d.type==='walk'?'Walk':'Rest'}</span>
+  `;
+  c.appendChild(hero);
+  if (d.type === 'walk') {
+    const rc = document.createElement('div');
+    rc.className = 'rest-card';
+    rc.innerHTML = `<div class="rest-icon-wrap">🚶‍♀️</div><h3>Walk day</h3><p>60 minutes on the treadmill. Keep your pace comfortable and steady. These walks are a big part of your fat-loss plan — don't skip them!</p>`;
+    c.appendChild(rc);
+    const tip = document.createElement('div');
+    tip.className = 'tip-pill';
+    tip.innerHTML = '<span class="tip-icon">✨</span><span>Try a 1–2% incline to mimic outdoor walking. Same pace, more calories burned.</span>';
+    c.appendChild(tip);
+    return;
+  }
+  if (d.type === 'rest') {
+    const rc = document.createElement('div');
+    rc.className = 'rest-card';
+    rc.innerHTML = `<div class="rest-icon-wrap">${d.icon}</div><h3>${d.label}</h3><p>${d.id===5 ? 'Light stretching or a short walk if you feel like it — totally optional. Your body is rebuilding. Rest is part of the plan.' : 'Full rest today. Sleep, hydrate, nourish yourself. Muscles grow during recovery, not during the workout.'}</p>`;
+    c.appendChild(rc);
+    return;
+  }
+  // Strength day
+  d.sections.forEach(section => {
+    const sl = document.createElement('div');
+    sl.className = 'section-label';
+    sl.textContent = section.label;
+    c.appendChild(sl);
+    section.exercises.forEach((ex, ei) => {
+      const key = `${currentDay}-${section.label.substring(0,3)}-${ei}`;
+      const done = completedExercises.includes(key);
+      const open = expandedExercises[key];
+      const card = document.createElement('div');
+      card.className = 'exercise-card' + (done ? ' completed' : '');
+      card.style.animationDelay = (ei * 0.04) + 's';
+      // Main row
+      const mainRow = document.createElement('div');
+      mainRow.className = 'exercise-main';
+      const checkCircle = document.createElement('div');
+      checkCircle.className = 'check-circle';
+      checkCircle.innerHTML = `<svg width="13" height="10" viewBox="0 0 12 9" fill="none"><path d="M1 4.5L4.5 8L11 1" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+      const textDiv = document.createElement('div');
+      textDiv.className = 'exercise-text';
+      textDiv.innerHTML = `<div class="exercise-name">${ex.name}</div><div class="exercise-equip">${ex.equip}</div>`;
+      const rightDiv = document.createElement('div');
+      rightDiv.className = 'exercise-right';
+      const setsSpan = document.createElement('span');
+      setsSpan.className = 'exercise-sets';
+      setsSpan.textContent = ex.sets;
+      const expandBtn = document.createElement('button');
+      expandBtn.className = 'expand-btn';
+      expandBtn.textContent = open ? '▲' : '▼';
+      expandBtn.setAttribute('aria-label', 'Show how-to');
+      rightDiv.appendChild(setsSpan);
+      rightDiv.appendChild(expandBtn);
+      mainRow.appendChild(checkCircle);
+      mainRow.appendChild(textDiv);
+      mainRow.appendChild(rightDiv);
+      // Detail panel
+      const detail = document.createElement('div');
+      detail.className = 'exercise-detail' + (open ? ' open' : '');
+      const tipBlock = document.createElement('div');
+      tipBlock.innerHTML = `<div class="detail-label">How to do it</div><p class="detail-text">${ex.tip}</p>`;
+      detail.appendChild(tipBlock);
+      detail.appendChild(makeVideoWidget(ex.video));
+      card.appendChild(mainRow);
+      card.appendChild(detail);
+      // Interactions
+      checkCircle.addEventListener('click', e => {
+        e.stopPropagation();
+        completedExercises = done
+          ? completedExercises.filter(k => k !== key)
+          : [...completedExercises, key];
+        save(); renderDay(); updateProgress();
+      });
+      expandBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        expandedExercises[key] = !expandedExercises[key];
+        renderDay();
+        // Scroll card into view after expand
+        setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+      });
+      c.appendChild(card);
+    });
+  });
+  // Tip pill
+  const allKeys = d.sections.flatMap(s => s.exercises.map((ex, ei) => `${currentDay}-${s.label.substring(0,3)}-${ei}`));
+  const doneCount = allKeys.filter(k => completedExercises.includes(k)).length;
+  const tip = document.createElement('div');
+  tip.className = 'tip-pill';
+  tip.innerHTML = '<span class="tip-icon">💗</span><span>Rest 30–45 sec between exercises. Complete all exercises for one round, then repeat. Form before weight — always.</span>';
+  c.appendChild(tip);
+  // Complete button
+  const dayDone = completedDays.includes('day-' + currentDay);
+  const btn = document.createElement('button');
+  btn.className = 'complete-day-btn';
+  btn.disabled = dayDone;
+  btn.textContent = dayDone
+    ? '🌸 Workout complete — amazing work!'
+    : `Mark workout complete (${doneCount} / ${allKeys.length} done)`;
+  btn.onclick = () => {
+    if (!completedDays.includes('day-' + currentDay)) {
+      completedDays.push('day-' + currentDay);
+      save(); renderNav(); renderDay(); updateProgress();
+    }
+  };
+  c.appendChild(btn);
+  document.getElementById('motive').textContent = '"' + QUOTES[Math.floor(Math.random() * QUOTES.length)] + '"';
+}
+renderNav(); renderDay(); updateProgress();
+</script>
+</body>
+</html>
