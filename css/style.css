@@ -295,6 +295,7 @@ button.btn.small { padding: 8px 16px; font-size: 13px; }
   width: 100%; max-width: 560px; min-height: 320px; aspect-ratio: 5 / 3.4;
   perspective: 1400px; cursor: pointer;
   user-select: none;
+  container-type: inline-size;
 }
 .flashcard-inner {
   position: relative; width: 100%; height: 100%;
@@ -309,12 +310,12 @@ button.btn.small { padding: 8px 16px; font-size: 13px; }
   -webkit-backface-visibility: hidden;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  gap: 6px;
+  gap: 10px;
   background: var(--bg-card);
   border: 1.5px solid var(--line);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
-  padding: 36px 28px 42px; text-align: center;
+  padding: 36px 28px 56px; text-align: center;
   overflow: hidden;
 }
 /* Gentle accent wash on both faces (no heavy noise) */
@@ -343,35 +344,45 @@ button.btn.small { padding: 8px 16px; font-size: 13px; }
   background: var(--mint-soft);
 }
 .flashcard .jp-main {
-  font-size: clamp(40px, 10vw, 72px);
-  line-height: 1.05;
+  font-size: clamp(34px, 11cqw, 64px);
+  line-height: 1.1;
   color: var(--ink);
+  word-break: break-word;
+  max-width: 100%;
 }
 .flashcard .kana {
   color: var(--ink-soft);
-  font-size: 18px;
-  margin-top: 10px;
+  font-size: clamp(14px, 3.2cqw, 18px);
+  margin-top: 6px;
   letter-spacing: .04em;
+  max-width: 100%;
+  word-break: break-word;
 }
 .flashcard .romaji {
   font-style: italic;
   color: var(--accent-ink);
-  margin-top: 4px;
-  font-size: 14px;
+  margin-top: 2px;
+  font-size: clamp(12px, 2.6cqw, 14px);
   letter-spacing: .03em;
+  max-width: 100%;
+  word-break: break-word;
 }
 .flashcard .en {
-  font-size: clamp(26px, 5.5vw, 36px);
+  font-size: clamp(22px, 5.6cqw, 34px);
   font-family: "Noto Serif JP",serif;
   font-weight: 600;
   color: var(--ink);
+  line-height: 1.2;
+  max-width: 100%;
+  word-break: break-word;
 }
 .flashcard .notes {
   color: var(--ink-soft);
-  font-size: 14px;
-  margin-top: 14px;
+  font-size: clamp(12px, 2.6cqw, 14px);
+  margin-top: 8px;
   max-width: 90%;
   line-height: 1.5;
+  word-break: break-word;
 }
 .flashcard .hint-flip {
   position: absolute;
@@ -779,7 +790,26 @@ footer.site code {
   .tab-btn { min-width: 44%; font-size: 13px; padding: 8px 12px; }
   .tabs { border-radius: 24px; }
   .flashcard { max-width: 100%; aspect-ratio: auto; min-height: 360px; }
+  .flashcard-face { padding: 32px 22px 50px; gap: 8px; }
   header.site { padding: 30px 16px 8px; }
+}
+
+/* ---------------------------------------------------------------
+   Tablet — give the flashcard real room so text doesn't jumble
+----------------------------------------------------------------*/
+@media (min-width: 561px) and (max-width: 1023px) {
+  .flashcard {
+    max-width: 640px;
+    aspect-ratio: auto;
+    min-height: 420px;
+  }
+  .flashcard-face {
+    padding: 44px 36px 60px;
+    gap: 14px;
+    justify-content: center;
+  }
+  .flashcard .hint-flip { bottom: 18px; font-size: 12px; }
+  .rating-row { max-width: 640px; }
 }
 
 /* Subtle entrance for options */
