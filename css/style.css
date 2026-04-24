@@ -345,10 +345,33 @@ button.btn.small { padding: 8px 16px; font-size: 13px; }
 }
 .flashcard .jp-main {
   font-size: clamp(34px, 11cqw, 64px);
-  line-height: 1.1;
+  line-height: 1.4;
   color: var(--ink);
   word-break: break-word;
   max-width: 100%;
+  /* Make room for ruby annotations above */
+  ruby-align: center;
+  ruby-position: over;
+  -webkit-ruby-position: before;
+}
+.flashcard .jp-main ruby {
+  /* Slight breathing room around each ruby block */
+  margin: 0 1px;
+}
+.flashcard .jp-main rt {
+  font-size: 0.36em;
+  font-weight: 500;
+  letter-spacing: .02em;
+  color: var(--accent-ink, var(--ink-soft));
+  /* Lift the kana up a touch so it doesn't touch the kanji */
+  line-height: 1.2;
+  user-select: none;
+}
+/* Browsers that don't support ruby (very rare) — fallback */
+@supports not (ruby-position: over) {
+  .flashcard .jp-main rt::before { content: " ("; }
+  .flashcard .jp-main rt::after  { content: ") "; }
+  .flashcard .jp-main rt { font-size: 0.5em; }
 }
 .flashcard .kana {
   color: var(--ink-soft);

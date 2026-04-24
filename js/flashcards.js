@@ -15,6 +15,80 @@ window.Flashcards = (function () {
 
   function cardKey(card) { return card.jp + "|" + card.en; }
 
+  // ---- Furigana helpers ----
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+  function isKanji(c) {
+    const code = c.codePointAt(0);
+    return (code >= 0x4E00 && code <= 0x9FFF) || (code >= 0x3400 && code <= 0x4DBF) || code === 0x3005;
+  }
+  function isKana(c) {
+    const code = c.codePointAt(0);
+    return (code >= 0x3040 && code <= 0x309F) || (code >= 0x30A0 && code <= 0x30FF) || code === 0x30FC;
+  }
+  // Build HTML with <ruby> furigana, aligning the `kana` reading to each
+  // kanji block in `jp`. Hiragana/katakana inside jp acts as anchor points.
+  // Examples:
+  //   "食べる"/"たべる"  → <ruby>食<rt>た</rt></ruby>べる
+  //   "食べ物"/"たべもの" → <ruby>食<rt>た</rt></ruby>べ<ruby>物<rt>もの</rt></ruby>
+  //   "お父さん"/"おとうさん" → お<ruby>父<rt>とう</rt></ruby>さん
+  //   "学校"/"がっこう"   → <ruby>学校<rt>がっこう</rt></ruby>
+  function buildFurigana(jp, kana) {
+    if (!jp) return "";
+    if (!kana || kana === jp) return escapeHtml(jp);
+    // Group jp into runs of kanji ('k'), kana ('h'), or other ('o')
+    const runs = [];
+    let curType = null, curText = "";
+    for (const c of jp) {
+      const t = isKanji(c) ? "k" : (isKana(c) ? "h" : "o");
+      if (t === curType) { curText += c; }
+      else { if (curText) runs.push({ type: curType, text: curText }); curType = t; curText = c; }
+    }
+    if (curText) runs.push({ type: curType, text: curText });
+    // No kanji at all → just plain text
+    if (!runs.some(r => r.type === "k")) return escapeHtml(jp);
+    // Walk through, allocating chunks of the kana string to each kanji run
+    let kIdx = 0, html = "";
+    for (let i = 0; i < runs.length; i++) {
+      const run = runs[i];
+      if (run.type !== "k") {
+        // Anchor: skip same length in kana (best-effort — don't fail if mismatched)
+        kIdx = Math.min(kana.length, kIdx + run.text.length);
+        html += escapeHtml(run.text);
+      } else {
+        // Find next kana anchor to know where this kanji's reading ends
+        let nextAnchor = "";
+        for (let j = i + 1; j < runs.length; j++) {
+          if (runs[j].type === "h") { nextAnchor = runs[j].text; break; }
+        }
+        let endIdx;
+        if (nextAnchor) {
+          endIdx = kana.indexOf(nextAnchor, kIdx);
+          if (endIdx === -1) endIdx = kana.length;
+        } else {
+          endIdx = kana.length;
+        }
+        const reading = kana.slice(kIdx, endIdx);
+        kIdx = endIdx;
+        if (reading) {
+          html += '<ruby>' + escapeHtml(run.text) + '<rt>' + escapeHtml(reading) + '</rt></ruby>';
+        } else {
+          html += escapeHtml(run.text);
+        }
+      }
+    }
+    return html;
+  }
+  // Does the JP string contain any kanji?
+  function hasKanji(jp) {
+    if (!jp) return false;
+    for (const c of jp) if (isKanji(c)) return true;
+    return false;
+  }
+
   function loadDeck(deckObj) {
     deck = deckObj;
     srsState = Store.getSrs(deck.id);
@@ -60,8 +134,19 @@ window.Flashcards = (function () {
       document.getElementById("fc-again").onclick = () => loadDeck(deck);
       return;
     }
-    document.getElementById("fc-front").textContent = card.jp;
-    document.getElementById("fc-kana").textContent = (card.kana && card.kana !== card.jp) ? card.kana : "";
+    const front = document.getElementById("fc-front");
+    const kanaEl = document.getElementById("fc-kana");
+    if (hasKanji(card.jp) && card.kana && card.kana !== card.jp) {
+      // Render with furigana ruby — hide separate kana line (redundant)
+      front.innerHTML = buildFurigana(card.jp, card.kana);
+      kanaEl.textContent = "";
+      kanaEl.style.display = "none";
+    } else {
+      // Pure kana / single-char kana / no reading — plain text
+      front.textContent = card.jp;
+      kanaEl.textContent = (card.kana && card.kana !== card.jp) ? card.kana : "";
+      kanaEl.style.display = "";
+    }
     document.getElementById("fc-en").textContent = card.en;
     document.getElementById("fc-romaji").textContent = card.romaji || "";
     document.getElementById("fc-notes").textContent = card.notes || "";
