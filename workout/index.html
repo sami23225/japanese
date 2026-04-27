@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="theme-color" content="#E8447A">
@@ -168,8 +168,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 3px;
-    padding: 9px 8px;
+    gap: 4px;
+    padding: 10px 10px;
     border-radius: 14px;
     font-size: 10px;
     font-weight: 800;
@@ -178,10 +178,11 @@
     color: var(--muted);
     cursor: pointer;
     transition: all 0.2s;
-    min-width: 46px;
+    min-width: 54px;
+    min-height: 58px;
     touch-action: manipulation;
   }
-  .day-tab .tab-icon { font-size: 18px; }
+  .day-tab .tab-icon { font-size: 20px; }
   .day-tab.active {
     background: var(--pink);
     border-color: var(--pink);
@@ -292,11 +293,11 @@
     display: flex;
     align-items: center;
     padding: 14px 12px;
-    gap: 10px;
-    min-height: 64px;
+    gap: 12px;
+    min-height: 72px;
   }
   .check-circle {
-    width: 32px; height: 32px;
+    width: 44px; height: 44px;
     border-radius: 50%;
     border: 2px solid var(--pink-mid);
     flex-shrink: 0;
@@ -308,6 +309,7 @@
     cursor: pointer;
     touch-action: manipulation;
   }
+  .check-circle svg { width: 16px; height: 13px; }
   .exercise-card.completed .check-circle {
     background: var(--green);
     border-color: var(--green);
@@ -355,14 +357,14 @@
   .expand-btn {
     border: 1px solid var(--border);
     background: var(--pink-pale);
-    width: 32px; height: 32px;
-    border-radius: 10px;
+    width: 40px; height: 40px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     color: var(--pink);
-    font-size: 11px;
+    font-size: 13px;
     transition: background 0.15s;
     touch-action: manipulation;
   }
@@ -540,17 +542,65 @@
     to   { opacity: 1; transform: translateY(0); }
   }
   /* RESPONSIVE TWEAKS */
+  /* Very small phones (iPhone SE, older Androids) */
+  @media (max-width: 380px) {
+    header { padding: calc(1.25rem + var(--safe-top)) 1rem 2.5rem; }
+    header h1 { font-size: 24px; }
+    .header-sub { font-size: 12px; }
+    .stat-pill { font-size: 10px; padding: 3px 10px; }
+    .progress-section { margin: -1.1rem 0.75rem 0; padding: 0.9rem 1rem; }
+    .week-nav { padding: 0.9rem 0.75rem 0.4rem; gap: 6px; }
+    .day-tab { min-width: 48px; padding: 9px 8px; }
+    .content { padding: 0.6rem 0.75rem; }
+    .exercise-main { padding: 12px 10px; gap: 10px; }
+    .exercise-name { font-size: 13px; }
+    .exercise-equip { font-size: 10px; }
+    .exercise-sets { font-size: 9px; padding: 2px 7px; }
+    .check-circle { width: 40px; height: 40px; }
+    .expand-btn { width: 38px; height: 38px; }
+    .day-hero { padding: 0.9rem; gap: 10px; }
+    .day-hero-icon { width: 42px; height: 42px; font-size: 19px; }
+    .day-hero-name { font-size: 16px; }
+    .complete-day-btn { padding: 16px 14px; font-size: 14px; }
+  }
+  /* Large phones & small tablets */
   @media (min-width: 480px) {
     header { padding: calc(2rem + var(--safe-top)) 1.5rem 3.5rem; }
     header h1 { font-size: 32px; }
     .content { padding: 0.75rem 1.25rem; }
     .week-nav { padding: 1.25rem 1.25rem 0.5rem; }
     .progress-section { margin: -1.4rem 1.25rem 0; }
-    .exercise-main { padding: 14px 14px; }
-    .exercise-detail { padding: 14px 14px; }
+    .exercise-main { padding: 16px 14px; }
+    .exercise-detail { padding: 16px 14px; }
   }
+  /* Tablets — constrain readable column, keep full-screen feel */
   @media (min-width: 640px) {
-    body { max-width: 540px; margin: 0 auto; }
+    .progress-section { max-width: 760px; margin-left: auto; margin-right: auto; }
+    .week-nav { max-width: 820px; margin-left: auto; margin-right: auto; }
+    .content { max-width: 820px; margin-left: auto; margin-right: auto; }
+    .motive-strip { max-width: 820px; margin-left: auto; margin-right: auto; }
+    .day-tab { min-width: 64px; padding: 11px 12px; font-size: 11px; }
+    .day-tab .tab-icon { font-size: 22px; }
+  }
+  /* Tablet landscape / small laptop */
+  @media (min-width: 1024px) {
+    header { padding-left: 3rem; padding-right: 3rem; }
+    header h1 { font-size: 38px; }
+    .progress-section { max-width: 920px; }
+    .week-nav, .content, .motive-strip { max-width: 920px; }
+    .day-hero { padding: 1.3rem 1.4rem; }
+    .day-hero-name { font-size: 20px; }
+    .exercise-main { min-height: 80px; padding: 18px 18px; }
+    .exercise-detail { padding: 18px 18px; }
+  }
+  /* Respect reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 </style>
 </head>
@@ -586,7 +636,7 @@ const QUOTES = [
   "She believed she could, so she did."
 ];
 function ytID(url) {
-  const m = url.match(/(?:v=|youtu\.be\/)([^&?/]+)/);
+  const m = url.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_-]{11})/);
   return m ? m[1] : '';
 }
 const DAYS = [
@@ -596,7 +646,7 @@ const DAYS = [
     sections:[
       { label:"Warm-up — 5 min", exercises:[
         { name:"Bodyweight squats", equip:"No equipment", sets:"2 × 10", tip:"Stand feet shoulder-width apart, sit back like you're lowering into a chair. Keep your chest up and knees tracking over your toes.", video:"https://www.youtube.com/watch?v=YaXPRqUwItQ" },
-        { name:"Hip circles & leg swings", equip:"No equipment", sets:"1 min", tip:"Hold a wall for balance. Swing each leg forward and back, then side to side. Loosens hip flexors before lifting.", video:"https://www.youtube.com/watch?v=e1YPSxKzXgU" },
+        { name:"Hip circles & leg swings", equip:"No equipment", sets:"1 min", tip:"Hold a wall for balance. Swing each leg forward and back, then side to side. Loosens hip flexors before lifting.", video:"https://www.youtube.com/watch?v=0XvKtEZ4i38" },
       ]},
       { label:"Circuit — 3 rounds", exercises:[
         { name:"Barbell squat", equip:"Barbell + plates", sets:"12–15 reps", tip:"Place bar across upper back (not neck). Feet shoulder-width, toes slightly out. Squat until thighs are parallel to floor. Drive through heels to stand. Start light — form first!", video:"https://www.youtube.com/watch?v=ultWZbUMPL8" },
@@ -613,7 +663,7 @@ const DAYS = [
     label:"Upper body + core", meta:"3 rounds · ~35 min",
     sections:[
       { label:"Warm-up — 5 min", exercises:[
-        { name:"Arm circles & shoulder rolls", equip:"No equipment", sets:"1 min each direction", tip:"Start small circles forward, then backward. Then roll shoulders back slowly. Warms up the shoulder joint before any pressing.", video:"https://www.youtube.com/watch?v=1ZSLsP3TPAE" },
+        { name:"Arm circles & shoulder rolls", equip:"No equipment", sets:"1 min each direction", tip:"Start small circles forward, then backward. Then roll shoulders back slowly. Warms up the shoulder joint before any pressing.", video:"https://www.youtube.com/watch?v=140RTNMciH8" },
         { name:"Push-up plank hold", equip:"No equipment", sets:"30 sec", tip:"Hold top of push-up position: wrists under shoulders, body in a straight line, core tight. Don't let hips sag or pike up. Breathe!", video:"https://www.youtube.com/watch?v=ASdvN_XEl_c" },
       ]},
       { label:"Circuit — 3 rounds", exercises:[
@@ -631,7 +681,7 @@ const DAYS = [
     label:"Full body circuit", meta:"3 rounds · ~40 min",
     sections:[
       { label:"Warm-up — 5 min", exercises:[
-        { name:"Marching + hip hinge", equip:"No equipment", sets:"2 min", tip:"March lifting knees high for 1 min, then do 10 slow hip hinges (push hips back, flat back, return to standing). Gets your whole body warm and ready.", video:"https://www.youtube.com/watch?v=e1YPSxKzXgU" },
+        { name:"Marching + hip hinge", equip:"No equipment", sets:"2 min", tip:"March lifting knees high for 1 min, then do 10 slow hip hinges (push hips back, flat back, return to standing). Gets your whole body warm and ready.", video:"https://www.youtube.com/watch?v=Dn3GexXx228" },
       ]},
       { label:"Circuit — 3 rounds", exercises:[
         { name:"Goblet squat", equip:"Kettlebell or dumbbell handle", sets:"12 reps", tip:"Hold kettlebell at chest by the horns (or dumbbell vertically). Feet slightly wider than hips, toes out. Squat deep — elbows inside knees at bottom. Drive up through heels.", video:"https://www.youtube.com/watch?v=MxsFDhcyFyE" },
@@ -691,15 +741,23 @@ function renderNav() {
 }
 function makeVideoWidget(videoUrl) {
   const id = ytID(videoUrl);
-  const thumb = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
   const wrapper = document.createElement('div');
   wrapper.innerHTML = `<div class="video-label">Exercise demo</div>`;
   const vw = document.createElement('div');
   vw.className = 'video-wrap';
+  if (!id) {
+    vw.innerHTML = `<div style="padding:18px;color:#fff;text-align:center;font-size:13px;">Video unavailable. <a href="${videoUrl}" target="_blank" rel="noopener" style="color:#FFB8D4;">Open on YouTube ↗</a></div>`;
+    wrapper.appendChild(vw);
+    return wrapper;
+  }
+  // High-quality thumbnail with fallback to mqdefault if hqdefault is missing
+  const thumbHQ = `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+  const thumbMQ = `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
   const thumbContainer = document.createElement('div');
   thumbContainer.className = 'video-thumb-container';
   thumbContainer.innerHTML = `
-    <img class="video-thumb" src="${thumb}" alt="Exercise demo" loading="lazy">
+    <img class="video-thumb" src="${thumbHQ}" alt="Exercise demo" loading="lazy" referrerpolicy="no-referrer"
+         onerror="this.onerror=null;this.src='${thumbMQ}';">
     <div class="video-play-overlay">
       <div class="video-play-btn">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>
@@ -708,10 +766,18 @@ function makeVideoWidget(videoUrl) {
   `;
   const iframe = document.createElement('iframe');
   iframe.className = 'video-iframe';
-  iframe.setAttribute('allow', 'autoplay; encrypted-media');
+  iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
   iframe.setAttribute('allowfullscreen', '');
   iframe.setAttribute('title', 'Exercise demo');
-  iframe.dataset.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+  // youtube-nocookie.com tends to be more embed-friendly than youtube.com
+  iframe.dataset.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+  // Fallback link in case the video can't be embedded
+  const fallback = document.createElement('a');
+  fallback.href = videoUrl;
+  fallback.target = '_blank';
+  fallback.rel = 'noopener';
+  fallback.style.cssText = 'display:block;text-align:center;padding:8px;font-size:11px;color:var(--muted);text-decoration:none;font-weight:700;';
+  fallback.textContent = 'Open on YouTube ↗';
   vw.appendChild(thumbContainer);
   vw.appendChild(iframe);
   vw.addEventListener('click', () => {
@@ -721,6 +787,7 @@ function makeVideoWidget(videoUrl) {
     }
   });
   wrapper.appendChild(vw);
+  wrapper.appendChild(fallback);
   return wrapper;
 }
 function renderDay() {
