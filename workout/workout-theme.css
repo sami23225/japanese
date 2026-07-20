@@ -42,3 +42,62 @@ header em{ color:#31EFB8 !important; font-style:normal !important; }
   font-weight:700 !important; box-shadow:0 10px 22px rgba(20,206,202,.32) !important; }
 .expand-btn, .video-play-btn{ color:#14CECA !important; }
 .section-label{ color:#14CECA !important; letter-spacing:.08em !important; }
+
+/* ---- videos always visible (no longer collapsed) ---- */
+.exercise-detail{ display:block !important; }
+.expand-btn{ display:none !important; }
+
+/* ---- Start workout button on the day hero ---- */
+.day-hero{ flex-wrap:wrap !important; }
+.wk-start{ flex-basis:100%; display:inline-flex; align-items:center; justify-content:center; gap:8px; margin-top:14px;
+  background:#14CECA; color:#151035; border:none; border-radius:12px; padding:13px 20px; font:600 15px 'Work Sans',sans-serif;
+  cursor:pointer; box-shadow:0 8px 18px rgba(20,206,202,.3); }
+.wk-start .wk-i{ font-style:normal; font-size:12px; }
+
+/* ---- focus-mode session (dark) ---- */
+#wk-focus{ position:fixed; inset:0; z-index:99999; background:#0E0B22; color:#fff; display:flex; flex-direction:column; font-family:'Work Sans',sans-serif; }
+.wk-head{ display:flex; align-items:center; gap:12px; padding:calc(env(safe-area-inset-top,0px) + 16px) 18px 12px; }
+.wk-x{ background:none; border:none; color:#8A90AE; font-size:19px; cursor:pointer; line-height:1; }
+.wk-prog{ flex:1; height:6px; background:#231E46; border-radius:99px; overflow:hidden; }
+.wk-prog i{ display:block; height:100%; background:#14CECA; border-radius:99px; transition:width .3s; }
+.wk-count{ font-size:12px; color:#8A90AE; }
+.wk-body{ flex:1; overflow-y:auto; padding:10px 20px 20px; max-width:520px; width:100%; margin:0 auto; }
+.wk-sec{ font-size:12px; color:#31EFB8; margin-bottom:6px; text-transform:capitalize; }
+.wk-name{ font-size:26px; font-weight:700; letter-spacing:-.02em; line-height:1.1; }
+.wk-meta{ font-size:14px; color:#8A90AE; margin:5px 0 16px; }
+.wk-vid{ margin-bottom:16px; }
+.wk-vwrap{ position:relative; aspect-ratio:16/9; background:#171331; border:1px solid #262046; border-radius:14px; display:flex; align-items:center; justify-content:center; overflow:hidden; cursor:pointer; }
+.wk-play{ color:#151035; background:#14CECA; padding:9px 16px; border-radius:999px; font-weight:600; font-size:14px; }
+.wk-iframe{ width:100%; height:100%; border:0; display:block; }
+.wk-tip{ background:#171331; border:1px solid #262046; border-radius:12px; padding:11px 13px; font-size:13px; line-height:1.5; color:#C9CCE0; margin-bottom:16px; }
+.wk-tip b{ color:#31EFB8; margin-right:6px; font-weight:600; }
+.wk-log{ display:flex; gap:12px; }
+.wk-log label{ flex:1; display:flex; flex-direction:column; font-size:12px; color:#8A90AE; gap:6px; }
+.wk-log input{ background:#171331; border:1.5px solid #2C2650; border-radius:10px; padding:12px; color:#fff; font-size:18px; font-weight:600; font-family:inherit; }
+.wk-log input:focus{ outline:none; border-color:#14CECA; }
+.wk-foot{ display:flex; align-items:center; gap:12px; padding:14px 20px calc(env(safe-area-inset-bottom,0px) + 16px); max-width:520px; width:100%; margin:0 auto; }
+.wk-prev{ background:#171331; border:1px solid #2C2650; color:#fff; width:52px; height:52px; border-radius:12px; font-size:18px; cursor:pointer; }
+.wk-done{ flex:1; background:#14CECA; color:#151035; border:none; border-radius:12px; padding:16px; font-size:16px; font-weight:700; cursor:pointer; font-family:inherit; }
+.wk-rest{ text-align:center; padding:40px 0; }
+.wk-restlbl{ font-size:13px; color:#8A90AE; }
+.wk-clock{ font-size:62px; font-weight:700; letter-spacing:-.02em; margin:6px 0; }
+.wk-next{ font-size:14px; color:#C9CCE0; margin-bottom:22px; }
+.wk-skip{ background:none; border:1px solid #2C2650; color:#fff; padding:10px 18px; border-radius:999px; cursor:pointer; font-family:inherit; }
+.wk-summary{ text-align:center; padding:34px 0; }
+.wk-check{ width:64px; height:64px; margin:0 auto 14px; border-radius:50%; background:#14CECA; color:#151035; font-size:32px; display:flex; align-items:center; justify-content:center; }
+.wk-done-t{ font-size:24px; font-weight:700; }
+.wk-stats{ display:flex; justify-content:center; gap:26px; margin-top:22px; }
+.wk-stats div{ display:flex; flex-direction:column; }
+.wk-stats b{ font-size:26px; font-weight:700; color:#31EFB8; }
+.wk-stats span{ font-size:12px; color:#8A90AE; }
+
+/* ---- sync button + panel ---- */
+#wk-sync{ position:fixed; right:16px; bottom:16px; z-index:9998; display:inline-flex; align-items:center; gap:7px; background:#fff; color:#151035; border:1px solid #E4E8F0; border-radius:999px; padding:9px 14px; font:600 13px 'Work Sans',sans-serif; box-shadow:0 8px 24px rgba(21,16,53,.14); cursor:pointer; }
+#wk-dot{ width:8px; height:8px; border-radius:50%; background:#8A90AE; display:inline-block; }
+#wk-syncp{ position:fixed; right:16px; bottom:64px; z-index:9998; width:290px; background:#fff; border:1px solid #E4E8F0; border-radius:16px; box-shadow:0 12px 30px rgba(21,16,53,.18); padding:16px; font:400 13px/1.5 'Work Sans',sans-serif; color:#151035; }
+#wk-syncp b{ font-size:14px; }
+#wk-syncp p{ color:#5F6685; margin:6px 0 12px; }
+#wk-syncp .wk-full{ width:100%; background:#14CECA; color:#151035; border:none; border-radius:10px; padding:11px; font-weight:600; cursor:pointer; font-family:inherit; margin-bottom:10px; }
+#wk-syncp .wk-coderow{ display:flex; gap:6px; }
+#wk-syncp .wk-coderow input{ flex:1; min-width:0; padding:9px; border:1px solid #E4E8F0; border-radius:9px; font:600 12px monospace; }
+#wk-syncp .wk-coderow button{ padding:9px 12px; border:none; background:#151035; color:#fff; border-radius:9px; font-weight:600; cursor:pointer; }
