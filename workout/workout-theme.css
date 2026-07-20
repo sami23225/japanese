@@ -1,0 +1,44 @@
+/* workout-theme.css — penpot-style reskin for the workout plan.
+   Inspired by penpot.app: airy cool bg, deep ink-navy, teal + mint accents,
+   Work Sans, clean rounded cards. Uses !important so it wins over the page's
+   inline <style> regardless of where the <link> is placed. Add to the <head>:
+     <link rel="stylesheet" href="workout-theme.css"> */
+
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;800&display=swap');
+
+/* ---- palette remap (the app is CSS-variable driven) ---- */
+:root{
+  --bg:#F5F8FB !important; --card:#FFFFFF !important;
+  --text:#151035 !important; --muted:#5F6685 !important; --border:#E4E8F0 !important;
+  --pink:#14CECA !important; --pink-deep:#0FA9A6 !important; --pink-light:#E4F7F6 !important;
+  --pink-mid:#7FE3DF !important; --pink-pale:#F1FBFA !important; --rose:#31EFB8 !important;
+  --mauve:#6E6A8F !important; --mauve-light:#EEEDF6 !important;
+  --green:#16B39A !important; --green-light:#E4F7F3 !important;
+  --blue:#7C74C9 !important; --blue-light:#EEEDF6 !important; --gold-light:#EEF4FF !important;
+}
+
+/* ---- type: Work Sans everywhere, big tight headlines ---- */
+body, h1, h2, h3, h4, button, input, select, textarea{
+  font-family:'Work Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif !important;
+}
+h1{ font-weight:800 !important; letter-spacing:-.02em !important; }
+body{ background:#F5F8FB !important; }
+
+/* ---- hero banner: navy → indigo → teal, mint accent word ---- */
+header{ background:linear-gradient(120deg,#151035 0%,#3A2F7D 48%,#14CECA 128%) !important; }
+header em{ color:#31EFB8 !important; font-style:normal !important; }
+
+/* ---- penpot component polish ---- */
+.day-tab.active{ background:#14CECA !important; color:#151035 !important; }
+.day-tab.active .tab-icon{ filter:none !important; }
+.stat-pill{ border-radius:999px !important; }
+.exercise-card{ border-radius:14px !important; border:1px solid #E6EAF2 !important;
+  box-shadow:0 1px 2px rgba(21,16,53,.04), 0 10px 26px rgba(21,16,53,.06) !important; }
+.check-circle{ border-color:#14CECA !important; }
+.progress-fill{ background:linear-gradient(90deg,#14CECA,#31EFB8) !important; }
+.progress-count{ color:#14CECA !important; font-weight:700 !important; }
+.badge-strength{ background:#14CECA !important; color:#151035 !important; }
+.complete-day-btn{ background:#14CECA !important; color:#151035 !important; border-radius:12px !important;
+  font-weight:700 !important; box-shadow:0 10px 22px rgba(20,206,202,.32) !important; }
+.expand-btn, .video-play-btn{ color:#14CECA !important; }
+.section-label{ color:#14CECA !important; letter-spacing:.08em !important; }
