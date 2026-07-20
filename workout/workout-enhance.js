@@ -71,10 +71,35 @@
 
   /* ---------------- Start button on the day hero ---------------- */
   function augment() {
-    var hero = document.querySelector('.day-hero'); if (!hero || hero.querySelector('.wk-start')) return;
-    var b = $('button', '', '<i class="wk-i">▶</i> Start workout'); b.className = 'wk-start';
-    b.onclick = openSession;
-    hero.appendChild(b);
+    var hero = document.querySelector('.day-hero'); if (!hero) return;
+    hero.classList.add('wk-today');
+    var day = (typeof DAYS !== 'undefined') ? DAYS[activeIdx()] : null;
+    if (day && !hero.querySelector('.wk-tiles')) {
+      var meta = day.meta || '';
+      var mins = (meta.match(/(\d+)\s*min/) || [])[1] || '—';
+      var moves = (day.sections || []).reduce(function (a, s) { return a + ((s.exercises || []).length); }, 0);
+      var rounds = (meta.match(/(\d+)\s*rounds?/) || [])[1] || String((day.sections || []).reduce(function (a, s) { return Math.max(a, parseRounds(s.label)); }, 1));
+      var tiles = $('div'); tiles.className = 'wk-tiles';
+      tiles.innerHTML =
+        '<div class="wk-tile"><b>' + mins + '</b><span>min</span></div>' +
+        '<div class="wk-tile"><b>' + moves + '</b><span>moves</span></div>' +
+        '<div class="wk-tile"><b>' + rounds + '</b><span>rounds</span></div>';
+      hero.appendChild(tiles);
+    }
+    if (!hero.querySelector('.wk-start')) {
+      var b = $('button', '', '<i class="wk-i">▶</i> Start workout'); b.className = 'wk-start';
+      b.onclick = openSession; hero.appendChild(b);
+    }
+    markDays();
+  }
+  function markDays() {
+    var s = state(), weekAgo = Date.now() - 6 * 86400000;
+    [].slice.call(document.querySelectorAll('.day-tab')).forEach(function (t, i) {
+      if (t.querySelector('.wk-ring')) return;
+      var day = (typeof DAYS !== 'undefined') ? DAYS[i] : null; if (!day) return;
+      var done = Object.keys(s.sessions || {}).some(function (k) { var p = k.split('|'); return p[0] === String(day.id) && new Date(p[1]).getTime() >= weekAgo; });
+      if (done) { var r = $('span', '', '✓'); r.className = 'wk-ring'; t.appendChild(r); }
+    });
   }
 
   /* ---------------- focus-mode session ---------------- */

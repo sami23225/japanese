@@ -101,3 +101,17 @@ header em{ color:#31EFB8 !important; font-style:normal !important; }
 #wk-syncp .wk-coderow{ display:flex; gap:6px; }
 #wk-syncp .wk-coderow input{ flex:1; min-width:0; padding:9px; border:1px solid #E4E8F0; border-radius:9px; font:600 12px monospace; }
 #wk-syncp .wk-coderow button{ padding:9px 12px; border:none; background:#151035; color:#fff; border-radius:9px; font-weight:600; cursor:pointer; }
+
+/* ---- redesigned "today" card + week completion rings ---- */
+.wk-today{ background:#151035 !important; border:1px solid #151035 !important; border-radius:20px !important; }
+.wk-today .day-hero-name{ color:#fff !important; }
+.wk-today .day-hero-sub{ color:#9AA0C0 !important; }
+.wk-today .day-hero-icon{ background:#221D46 !important; }
+.wk-today .day-hero-badge, .wk-today .badge-strength{ background:#14CECA !important; color:#151035 !important; }
+.wk-tiles{ flex-basis:100%; display:flex; gap:10px; margin-top:14px; }
+.wk-tile{ flex:1; background:#221D46; border-radius:12px; padding:11px 8px; text-align:center; }
+.wk-tile b{ display:block; font-size:17px; font-weight:700; color:#fff; }
+.wk-tile span{ font-size:11px; color:#8A90AE; }
+.wk-today .wk-start{ box-shadow:none !important; }
+.day-tab{ position:relative; }
+.wk-ring{ position:absolute; top:5px; right:6px; width:15px; height:15px; border-radius:50%; background:#14CECA; color:#151035; display:flex; align-items:center; justify-content:center; font-size:9px; font-weight:700; }
