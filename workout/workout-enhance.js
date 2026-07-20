@@ -104,7 +104,7 @@
         '<span class="wk-count">' + (sess.i + 1) + ' / ' + sess.steps.length + '</span>' +
       '</div>' +
       '<div class="wk-body">' +
-        '<div class="wk-sec">' + esc(st.sec.replace(/\s*[—-].*$/, '')) + (st.rounds > 1 ? ' · round ' + st.round + ' of ' + st.rounds : '') + '</div>' +
+        '<div class="wk-sec">' + esc(st.sec.replace(/\s+[—–-]\s+.*$/, '')) + (st.rounds > 1 ? ' · round ' + st.round + ' of ' + st.rounds : '') + '</div>' +
         '<div class="wk-name">' + esc(ex.name) + '</div>' +
         '<div class="wk-meta">' + esc(ex.equip || '') + (ex.sets ? ' · ' + esc(ex.sets) : '') + '</div>' +
         (vid ? '<div class="wk-vid"><div class="wk-vwrap" data-src="' + esc(vid) + '"><div class="wk-play">▶ Watch form</div></div></div>' : '') +
